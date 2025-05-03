@@ -63,6 +63,7 @@ unordered_map<string, unordered_map<string, string>> csvToHashTable(const string
 
 int main() {
 
+    int choice;
     string csvname;
 
     cout << "WELCOME TO \n";
@@ -99,16 +100,44 @@ int main() {
     printHashTable(myTable);
 
     //step 2
-    cout << "=== Do you want to use Database? === \n"; 
-    cout << "1.Yes \n"; //Insert / Delete / Search
-    cout << "2.No \n"; //go to step 3
-    cout << "Please enter your choice : ";
+    do {
+        cout << "=== Do you want to use Database? === \n"; 
+        cout << "1.Yes \n"; //Insert / Delete / Search
+        cout << "2.No \n"; //go to step 3
+        cout << "Please enter your choice : ";
+        cin >> choice;
+        
+        switch (choice) {
+            case 1:
+                //Database function
+                break;
+            case 2:
+                //go to step 3
+                break;
+            default:
+                cout << "Invalid choice \n" ;
+        }
+    } while (choice != 2);
 
     //step 3
-    cout << "=== Do you want to use Automate? === \n";
-    cout << "1.Yes \n"; //go to graph plotting
-    cout << "2.No \n"; //use only AI / graph plotting
-    cout << "Please enter your choice : ";
+    do {
+        cout << "=== Do you want to use Automate? ===\n";
+        cout << "1.Yes \n"; //go to graph plotting
+        cout << "2.No \n"; //use only AI / graph plotting
+        cout << "Please enter your choice : \n\n";
+        cin >> choice;
+        
+        switch (choice) {
+            case 1:
+                //go to graph plotting
+                break;
+            case 2:
+                //use only AI / graph plotting
+                break;
+            default:
+                cout << "Invalid choice \n" ;
+        }
+    } while (choice != 1);
 
     return 0;
 }
