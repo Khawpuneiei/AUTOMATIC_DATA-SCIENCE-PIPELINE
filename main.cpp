@@ -76,19 +76,6 @@ int main() {
     cin >> csvname;
     //input csv name (string)
 
-    //step 2
-    cout << "=== Do you want to use Database? === \n"; 
-    cout << "1.Yes \n"; //Insert / Delete / Search
-    cout << "2.No \n"; //go to step 3
-    cout << "Please enter your choice : ";
-
-    //step 3
-    cout << "=== Do you want to use Automate? === \n";
-    cout << "1.Yes \n"; //go to graph plotting
-    cout << "2.No \n"; //use only AI / graph plotting
-    cout << "Please enter your choice : ";
-
-
     auto myTable = csvToHashTable("data.csv");
 
 
@@ -110,6 +97,18 @@ int main() {
 
 
     printHashTable(myTable);
+
+    //step 2
+    cout << "=== Do you want to use Database? === \n"; 
+    cout << "1.Yes \n"; //Insert / Delete / Search
+    cout << "2.No \n"; //go to step 3
+    cout << "Please enter your choice : ";
+
+    //step 3
+    cout << "=== Do you want to use Automate? === \n";
+    cout << "1.Yes \n"; //go to graph plotting
+    cout << "2.No \n"; //use only AI / graph plotting
+    cout << "Please enter your choice : ";
 
     return 0;
 }
