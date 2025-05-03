@@ -1,26 +1,52 @@
 #include "Plot.h"
 #include "matplotlibcpp.h"
+#include <iostream>
 
 namespace plt = matplotlibcpp;
 
-void auto_plot(const std::unordered_map<std::string, std::vector<double>>& data) {
-    if (data.size() < 2) return;
+std::string ask_chart_type() {
+    int choice;
+    std::cout << "\nChoose type of graph:\n";
+    std::cout << "1.(Line Chart)\n";
+    std::cout << "2.(Bar Chart)\n";
+    std::cout << "Enter (1-2): ";
+    std::cin >> choice;
 
- 
-    auto it = data.begin();
-    std::string x_label = it->first;
-    std::vector<double> x = it->second;
-    ++it;
-
-    for (; it != data.end(); ++it) {
-        const std::string& y_label = it->first;
-        const std::vector<double>& y = it->second;
-
-        plt::figure(); 
-        plt::plot(x, y); 
-        plt::title(y_label + " vs " + x_label);
-        plt::xlabel(x_label);
-        plt::ylabel(y_label);
-        plt::show();
+    switch (choice) {
+        case 1: return "line";
+        case 2: return "bar";
+        default:
+            std::cout << "wrong number will use line bar in defualt\n";
+            return "line";
     }
+}
+
+std::string choose_column(const std::vector<std::string>& headers, const std::string& name) {
+    std::cout << "\n column:\n";
+    for (size_t i = 0; i < headers.size(); ++i) {
+        std::cout << i + 1 << ". " << headers[i] << "\n";
+    }
+
+    int choice;
+    std::cout << " Choose column " << name << " (number): ";
+    std::cin >> choice;
+    return headers[choice - 1];
+}
+
+void plot_line(const std::vector<double>& x, const std::vector<double>& y, std::string x_label, std::string y_label) {
+    plt::plot(x, y);
+    plt::title(y_label + " vs " + x_label);
+    plt::xlabel(x_label);
+    plt::ylabel(y_label);
+    plt::grid(true);
+    plt::show();
+}
+
+void plot_bar(const std::vector<double>& x, const std::vector<double>& y, std::string x_label, std::string y_label) {
+    plt::bar(x, y);
+    plt::title(y_label + " vs " + x_label);
+    plt::xlabel(x_label);
+    plt::ylabel(y_label);
+    plt::grid(true);
+    plt::show();
 }
