@@ -4,7 +4,7 @@
 #include <unordered_map>         
 #include <vector>                
 #include <string>
-
+#include "DataBase.h"
 using namespace std;
 
 // Function to split a CSV 
