@@ -1,6 +1,8 @@
 #pragma once
-#include <unordered_map>
-#include <vector>
 #include <string>
+#include <vector>
 
-void auto_plot(const std::unordered_map<std::string, std::vector<double>>& data);
+std::string ask_chart_type();
+std::string choose_column(const std::vector<std::string>& headers, const std::string& name);
+void plot_line(const std::vector<double>& x, const std::vector<double>& y, std::string x_label, std::string y_label);
+void plot_bar(const std::vector<double>& x, const std::vector<double>& y, std::string x_label, std::string y_label);
