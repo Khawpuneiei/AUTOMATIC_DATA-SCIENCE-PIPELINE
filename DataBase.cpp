@@ -1,3 +1,10 @@
+#include <iostream>  
+#include <fstream>               
+#include <sstream>               
+#include <unordered_map>         
+#include <vector>                
+#include <string>
+using namespace std;
 // FUNCTION  Search Key 
 void searchKey(const unordered_map<string, unordered_map<string, string>>& hashTable, const string& key) {
 
