@@ -8,7 +8,6 @@
 #include "Plot.h"
 
 using namespace std;
-
 // CSV Split Function
 vector<string> split(const string& line) {
     vector<string> result;
@@ -19,7 +18,6 @@ vector<string> split(const string& line) {
     }
     return result;
 }
-
 // CSV to Hash Table
 unordered_map<string, unordered_map<string, string>> csvToHashTable(const string& filename) {
     unordered_map<string, unordered_map<string, string>> hashTable;
