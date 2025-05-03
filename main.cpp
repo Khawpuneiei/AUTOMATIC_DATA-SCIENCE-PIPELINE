@@ -63,6 +63,31 @@ unordered_map<string, unordered_map<string, string>> csvToHashTable(const string
 
 int main() {
 
+    string csvname;
+
+    cout << "WELCOME TO \n";
+    cout << "AUTOMATE \n";
+    cout << "DATASCI \n";
+    cout << "PIPELINE";
+
+    //step 1
+    cout << "=== Upload CSV === \n"; 
+    cout << "Please enter your CSV name : ";
+    cin >> csvname;
+    //input csv name (string)
+
+    //step 2
+    cout << "=== Do you want to use Database? === \n"; 
+    cout << "1.Yes \n"; //Insert / Delete / Search
+    cout << "2.No \n"; //go to step 3
+    cout << "Please enter your choice : ";
+
+    //step 3
+    cout << "=== Do you want to use Automate? === \n";
+    cout << "1.Yes \n"; //go to graph plotting
+    cout << "2.No \n"; //use only AI / graph plotting
+    cout << "Please enter your choice : ";
+
 
     auto myTable = csvToHashTable("data.csv");
 
