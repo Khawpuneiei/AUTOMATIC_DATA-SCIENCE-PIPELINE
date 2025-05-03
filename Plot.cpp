@@ -50,3 +50,25 @@ void plot_bar(const std::vector<double>& x, const std::vector<double>& y, std::s
     plt::grid(true);
     plt::show();
 }
+std::unordered_map<std::string, std::vector<double>> extract_numeric_columns(
+    const std::unordered_map<std::string, std::unordered_map<std::string, std::string>>& table,
+    const std::vector<std::string>& columns) {
+
+    std::unordered_map<std::string, std::vector<double>> result;
+
+    for (const auto& col : columns) {
+        result[col] = {};
+    }
+
+    for (const auto& row : table) {
+        for (const auto& col : columns) {
+            try {
+                result[col].push_back(std::stod(row.second.at(col)));
+            } catch (...) {
+                result[col].push_back(0); 
+            }
+        }
+    }
+
+    return result;
+}
