@@ -1,14 +1,14 @@
-#AUTOMATIC DATA SCIENCE PIPELINE
-##Project description
+#  AUTOMATIC DATA SCIENCE PIPELINE
+##  Project description
 This project will provide you an easy automate data science pipeline for you. 
 Just need only dataset csv file and a few question Boom!!! 
 **" A SMooooooooTH automate data science pipeline for you "**
-##Feature
+##  Feature
 - mini database that can config your data
 - basic graph plotting
 - AI that can predict number or class
 
-##How to run the code 
+##  How to run the code 
 g++ main.cpp DataBase.cpp Plot.cpp dicision_tree.cpp -o myprogram
 ./myprogram
 
