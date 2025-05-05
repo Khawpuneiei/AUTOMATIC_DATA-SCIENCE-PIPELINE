@@ -6,6 +6,7 @@
 #include <string>
 #include "DataBase.h"
 #include "Plot.h"
+#include "decision_tree.h"
 
 using namespace std;
 // CSV Split Function
@@ -18,34 +19,32 @@ vector<string> split(const string& line) {
     }
     return result;
 }
-// CSV to Hash Table
-unordered_map<string, unordered_map<string, string>> csvToHashTable(const string& filename) {
-    unordered_map<string, unordered_map<string, string>> hashTable;
+// ---------- CSV to Hash Table ------------
+unordered_map<string, unordered_map<string, string>> csvToHashTable(const string& filename, vector<string>& headers) {
+    unordered_map<string, unordered_map<string, string>> table;
     ifstream file(filename);
     string line;
 
     if (!file.is_open()) {
         cout << "Error opening file." << endl;
-        return hashTable;
+        exit(1);
     }
 
     getline(file, line);
-    vector<string> headers = split(line);
+    headers = split(line);
 
     while (getline(file, line)) {
         vector<string> values = split(line);
         if (values.size() == headers.size()) {
             string key = values[0];
-            unordered_map<string, string> rowData;
-            for (size_t i = 1; i < headers.size(); ++i) {
-                rowData[headers[i]] = values[i];
-            }
-            hashTable[key] = rowData;
+            unordered_map<string, string> row;
+            for (size_t i = 1; i < headers.size(); ++i)
+                row[headers[i]] = values[i];
+            table[key] = row;
         }
     }
 
-    file.close();
-    return hashTable;
+    return table;
 }
 
 int main() {
@@ -60,8 +59,9 @@ int main() {
     cout << "Please enter your CSV file name (e.g., candy.csv): ";
     cin >> csvname;
 
-    auto myTable = csvToHashTable(csvname);
-    printHashTable(myTable);
+    vector<string> headers;
+    auto table = csvToHashTable(csvname, headers);
+    printHashTable(table);
 
     // Step 2: Database Function
     do {
@@ -99,25 +99,25 @@ int main() {
                             cin >> value;
                             newRow[field] = value;
                         }
-                        insertKey(myTable, key, newRow);
+                        insertKey(table, key, newRow);
                         break;
                     }
                     case 2: {
                         string key;
                         cout << "Enter key to delete: ";
                         cin >> key;
-                        deleteKey(myTable, key);
+                        deleteKey(table, key);
                         break;
                     }
                     case 3: {
                         string key;
                         cout << "Enter key to search: ";
                         cin >> key;
-                        searchKey(myTable, key);
+                        searchKey(table, key);
                         break;
                     }
                     case 4:
-                        printHashTable(myTable);
+                        printHashTable(table);
                         break;
                     case 5:
                         break;
@@ -138,8 +138,8 @@ int main() {
 
         if (choice == 1) {
             vector<string> headers;
-            if (!myTable.empty()) {
-                const auto& firstRow = myTable.begin()->second;
+            if (!table.empty()) {
+                const auto& firstRow = table.begin()->second;
                 for (const auto& pair : firstRow) {
                     headers.push_back(pair.first);
                 }
@@ -159,7 +159,7 @@ int main() {
             string x_col = headers[x_index];
             string y_col = headers[y_index];
 
-            auto data = extract_numeric_columns(myTable, {x_col, y_col});
+            auto data = extract_numeric_columns(table, {x_col, y_col});
             vector<double> x = data[x_col];
             vector<double> y = data[y_col];
 
@@ -170,7 +170,97 @@ int main() {
                 plot_bar(x, y, x_col, y_col);
             }
         }
+        //
     } while (choice != 2);
+    do{
+        printHashTable(table);
 
+        cout << "Columns available:\n";
+        for (auto& h : headers) cout << h << " ";
+        cout << endl;
+
+        string id_column;
+        cout << "Please enter the ID column: ";
+        cin >> id_column;
+
+        string target;
+        while (true) {
+            cout << "Please enter your target column: ";
+            cin >> target;
+
+            set<string> unique_classes;
+            for (auto& row : table)
+                unique_classes.insert(row.second.at(target));
+
+            if (unique_classes.size() == 2) {
+                cout << "This column can be used for classification." << endl;
+                break;
+            } else {
+                try {
+                    stod(table.begin()->second.at(target));
+                    cout << "This is a regression target." << endl;
+                    break;
+                } catch (...) {
+                    cout << "This column has more than two classes and is not numeric. Please choose another column." << endl;
+                }
+            }
+        }
+
+        vector<string> features;
+        for (auto& h : headers)
+            if (h != target && h != id_column)
+                features.push_back(h);
+
+        for (auto& row : table)
+            row.second["label"] = row.second[target];
+
+        bool is_regression = true;
+        try { stod(table.begin()->second.at(target)); }
+        catch (...) { is_regression = false; }
+
+        vector<string> keys;
+        for (auto& row : table) keys.push_back(row.first);
+        srand(time(0));
+
+        int split = int(keys.size() * 0.8);
+        unordered_map<string, unordered_map<string, string>> train, test;
+        for (int i = 0; i < split; ++i) train[keys[i]] = table[keys[i]];
+        for (int i = split; i < keys.size(); ++i) test[keys[i]] = table[keys[i]];
+
+        TreeNode* tree = nullptr;
+        if (!is_regression) {
+            cout << "Detected task: Classification\n";
+            tree = buildClassificationTree(train, features);
+        } else {
+            cout << "Detected task: Regression\n";
+            tree = buildRegressionTree(train, features, target);
+        }
+
+        if (!is_regression) {
+            vector<string> y_true, y_pred;
+            cout << "\n=== Predictions (Classification) ===\n";
+            for (auto& row : test) {
+                string true_label = row.second.at(target);
+                string pred_label = classify(tree, row.second);
+                y_true.push_back(true_label);
+                y_pred.push_back(pred_label);
+                cout << "True Label: " << true_label << ", Predicted: " << pred_label << endl;
+            }
+            classificationMetrics(y_true, y_pred);
+        } else {
+            vector<double> y_true, y_pred;
+            cout << "\n=== Predictions (Regression) ===\n";
+            for (auto& row : test) {
+                double true_val = stod(row.second.at(target));
+                double pred_val = regress(tree, row.second);
+                y_true.push_back(true_val);
+                y_pred.push_back(pred_val);
+                cout << "True Value: " << true_val << ", Predicted: " << pred_val << endl;
+            }
+            regressionMetrics(y_true, y_pred);
+        }
+
+
+    }while (false);
     return 0;
 }
