@@ -1,7 +1,7 @@
 #  AUTOMATIC DATA SCIENCE PIPELINE
 ##  Project description
-This project will provide you an easy automate data science pipeline for you. 
-Just need only dataset csv file and a few question Boom!!! 
+This project will provide you an easy automate data science pipeline for you. \n
+Just need only dataset csv file and a few question Boom!!! \n
 **" A SMooooooooTH automate data science pipeline for you "**
 ##  Feature
 - mini database that can config your data
