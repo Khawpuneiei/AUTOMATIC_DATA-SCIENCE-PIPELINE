@@ -10,6 +10,9 @@ Just need only dataset csv file and a few question Boom!!!
 
 ##  How to run the code 
 ```
+git clone https://github.com/Khawpuneiei/AUTOMATIC_DATA-SCIENCE-PIPELINE.git
+```
+```
 g++ main.cpp DataBase.cpp Plot.cpp dicision_tree.cpp -o myprogram
 ```
 ```
