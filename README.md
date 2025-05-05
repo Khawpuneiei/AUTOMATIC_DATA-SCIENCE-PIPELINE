@@ -9,7 +9,7 @@ Just need only dataset csv file and a few question Boom!!!
 - AI that can predict number or class
 
 ##  How to run the code 
-g++ main.cpp DataBase.cpp Plot.cpp dicision_tree.cpp -o myprogram  
-./myprogram
+```g++ main.cpp DataBase.cpp Plot.cpp dicision_tree.cpp -o myprogram  ```
+```./myprogram```
 
 **This project is a part of CPE112 (Data Structure and Algorithms) at KMUTT**
