@@ -1,7 +1,7 @@
 #  AUTOMATIC DATA SCIENCE PIPELINE
 ##  Project description
-This project will provide you an easy automate data science pipeline for you. \n
-Just need only dataset csv file and a few question Boom!!! \n
+This project will provide you an easy automate data science pipeline for you.  
+Just need only dataset csv file and a few question Boom!!!  
 **" A SMooooooooTH automate data science pipeline for you "**
 ##  Feature
 - mini database that can config your data
@@ -9,7 +9,7 @@ Just need only dataset csv file and a few question Boom!!! \n
 - AI that can predict number or class
 
 ##  How to run the code 
-g++ main.cpp DataBase.cpp Plot.cpp dicision_tree.cpp -o myprogram
+g++ main.cpp DataBase.cpp Plot.cpp dicision_tree.cpp -o myprogram  
 ./myprogram
 
 **This project is a part of CPE112 (Data Structure and Algorithms) at KMUTT**
