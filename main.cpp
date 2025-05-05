@@ -9,6 +9,7 @@
 #include "decision_tree.h"
 
 using namespace std;
+
 // CSV Split Function
 vector<string> split(const string& line) {
     vector<string> result;
@@ -19,6 +20,7 @@ vector<string> split(const string& line) {
     }
     return result;
 }
+
 // ---------- CSV to Hash Table ------------
 unordered_map<string, unordered_map<string, string>> csvToHashTable(const string& filename, vector<string>& headers) {
     unordered_map<string, unordered_map<string, string>> table;
@@ -159,20 +161,34 @@ int main() {
             string x_col = headers[x_index];
             string y_col = headers[y_index];
 
-            auto data = extract_numeric_columns(table, {x_col, y_col});
-            vector<double> x = data[x_col];
-            vector<double> y = data[y_col];
-
             string chart_type = ask_chart_type();
-            if (chart_type == "line") {
-                plot_line(x, y, x_col, y_col);
+            if (chart_type == "cat_bar") {
+                vector<string> categories;
+                vector<double> values;
+                for (const auto& row : table) {
+                    categories.push_back(row.second.at(x_col));
+                    try {
+                        values.push_back(stod(row.second.at(y_col)));
+                    } catch (...) {
+                        values.push_back(0);
+                    }
+                }
+                plot_categorical_bar(categories, values, x_col, y_col);
             } else {
-                plot_bar(x, y, x_col, y_col);
+                auto data = extract_numeric_columns(table, {x_col, y_col});
+                vector<double> x = data[x_col];
+                vector<double> y = data[y_col];
+                if (chart_type == "line") {
+                    plot_line(x, y, x_col, y_col);
+                } else {
+                    plot_bar(x, y, x_col, y_col);
+                }
             }
         }
-        //
     } while (choice != 2);
-    do{
+
+    // Step 4: Decision Tree
+    do {
         printHashTable(table);
 
         cout << "Columns available:\n";
@@ -260,7 +276,7 @@ int main() {
             regressionMetrics(y_true, y_pred);
         }
 
+    } while (false);
 
-    }while (false);
     return 0;
 }
