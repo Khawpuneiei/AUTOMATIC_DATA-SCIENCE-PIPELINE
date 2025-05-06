@@ -10,44 +10,6 @@
 
 using namespace std;
 
-// CSV Split Function
-vector<string> split(const string& line) {
-    vector<string> result;
-    stringstream ss(line);
-    string item;
-    while (getline(ss, item, ',')) {
-        result.push_back(item);
-    }
-    return result;
-}
-
-// ---------- CSV to Hash Table ------------
-unordered_map<string, unordered_map<string, string>> csvToHashTable(const string& filename, vector<string>& headers) {
-    unordered_map<string, unordered_map<string, string>> table;
-    ifstream file(filename);
-    string line;
-
-    if (!file.is_open()) {
-        cout << "Error opening file." << endl;
-        exit(1);
-    }
-
-    getline(file, line);
-    headers = split(line);
-
-    while (getline(file, line)) {
-        vector<string> values = split(line);
-        if (values.size() == headers.size()) {
-            string key = values[0];
-            unordered_map<string, string> row;
-            for (size_t i = 1; i < headers.size(); ++i)
-                row[headers[i]] = values[i];
-            table[key] = row;
-        }
-    }
-
-    return table;
-}
 
 int main() {
     int choice;
@@ -188,95 +150,7 @@ int main() {
     } while (choice != 2);
 
     // Step 4: Decision Tree
-    do {
-        printHashTable(table);
-
-        cout << "Columns available:\n";
-        for (auto& h : headers) cout << h << " ";
-        cout << endl;
-
-        string id_column;
-        cout << "Please enter the ID column: ";
-        cin >> id_column;
-
-        string target;
-        while (true) {
-            cout << "Please enter your target column: ";
-            cin >> target;
-
-            set<string> unique_classes;
-            for (auto& row : table)
-                unique_classes.insert(row.second.at(target));
-
-            if (unique_classes.size() == 2) {
-                cout << "This column can be used for classification." << endl;
-                break;
-            } else {
-                try {
-                    stod(table.begin()->second.at(target));
-                    cout << "This is a regression target." << endl;
-                    break;
-                } catch (...) {
-                    cout << "This column has more than two classes and is not numeric. Please choose another column." << endl;
-                }
-            }
-        }
-
-        vector<string> features;
-        for (auto& h : headers)
-            if (h != target && h != id_column)
-                features.push_back(h);
-
-        for (auto& row : table)
-            row.second["label"] = row.second[target];
-
-        bool is_regression = true;
-        try { stod(table.begin()->second.at(target)); }
-        catch (...) { is_regression = false; }
-
-        vector<string> keys;
-        for (auto& row : table) keys.push_back(row.first);
-        srand(time(0));
-
-        int split = int(keys.size() * 0.8);
-        unordered_map<string, unordered_map<string, string>> train, test;
-        for (int i = 0; i < split; ++i) train[keys[i]] = table[keys[i]];
-        for (int i = split; i < keys.size(); ++i) test[keys[i]] = table[keys[i]];
-
-        TreeNode* tree = nullptr;
-        if (!is_regression) {
-            cout << "Detected task: Classification\n";
-            tree = buildClassificationTree(train, features);
-        } else {
-            cout << "Detected task: Regression\n";
-            tree = buildRegressionTree(train, features, target);
-        }
-
-        if (!is_regression) {
-            vector<string> y_true, y_pred;
-            cout << "\n=== Predictions (Classification) ===\n";
-            for (auto& row : test) {
-                string true_label = row.second.at(target);
-                string pred_label = classify(tree, row.second);
-                y_true.push_back(true_label);
-                y_pred.push_back(pred_label);
-                cout << "True Label: " << true_label << ", Predicted: " << pred_label << endl;
-            }
-            classificationMetrics(y_true, y_pred);
-        } else {
-            vector<double> y_true, y_pred;
-            cout << "\n=== Predictions (Regression) ===\n";
-            for (auto& row : test) {
-                double true_val = stod(row.second.at(target));
-                double pred_val = regress(tree, row.second);
-                y_true.push_back(true_val);
-                y_pred.push_back(pred_val);
-                cout << "True Value: " << true_val << ", Predicted: " << pred_val << endl;
-            }
-            regressionMetrics(y_true, y_pred);
-        }
-
-    } while (false);
+    AI(table, headers);
 
     return 0;
 }
