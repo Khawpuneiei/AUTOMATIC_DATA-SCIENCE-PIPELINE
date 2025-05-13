@@ -181,7 +181,7 @@ inline void AI(
     unordered_map<string, unordered_map<string, string>>& table,
     const vector<string>& headers)
 {
-    printHashTable(table);
+    
 
     cout << "Columns available:" << endl;
     for (const auto& h : headers) {
@@ -202,13 +202,11 @@ inline void AI(
         for (const auto& row : table) {
             unique_classes.insert(row.second.at(target));
         }
-        cout <<"checkpoint1" << endl;
 
         if (unique_classes.size() == 2) {
             cout << "This column can be used for classification." << endl;
             break;                  
         } else {
-            cout <<"checkpoint2" << endl;
             try {
                 stod(table.begin()->second.at(target));
                 cout << "This is a regression target." << endl;
@@ -221,13 +219,11 @@ inline void AI(
 
     vector<string> features;
     for (const auto& h : headers) {
-        cout <<"checkpoint3" << endl;
         if (h != target && h != id_column)
             features.push_back(h); 
     }
 
     for (auto& row : table) {
-        cout <<"checkpoint4" << endl;
         row.second["label"] = row.second[target];
     }
 
@@ -245,7 +241,6 @@ inline void AI(
     srand(time(0));             
 
     int split = static_cast<int>(keys.size() * 0.8);
-    cout <<"checkpoint5" << endl;
     unordered_map<string, unordered_map<string, string>> train, test;
     for (int i = 0; i < split; ++i) {
         train[keys[i]] = table[keys[i]];
@@ -256,17 +251,14 @@ inline void AI(
 
     TreeNode* tree = nullptr;
     if (!is_regression) {
-        cout <<"checkpoint6" << endl;
         cout << "Detected task: Classification" << endl;
         tree = buildClassificationTree(train, features);
     } else {
-        cout <<"checkpoint6" << endl;
         cout << "Detected task: Regression" << endl;
         tree = buildRegressionTree(train, features, target);
     }
-
+        
     if (!is_regression) {
-        cout <<"checkpoint7" << endl;
         vector<string> y_true, y_pred;
         cout << "\n=== Predictions (Classification) ===" << endl;
         for (const auto& row : test) {
@@ -277,9 +269,8 @@ inline void AI(
             cout << "True Label: " << true_label << ", Predicted: " << pred_label << endl;
         }
         classificationMetrics(y_true, y_pred); 
-        cout <<"checkpoint8" << endl;
     } else {
-        cout <<"checkpoint7" << endl;
+
         vector<double> y_true, y_pred;
         cout << "\n=== Predictions (Regression) ===" << endl;
         for (const auto& row : test) {
@@ -290,7 +281,6 @@ inline void AI(
             cout << "True Value: " << true_val << ", Predicted: " << pred_val << endl;
         }
         regressionMetrics(y_true, y_pred); 
-        cout <<"checkpoint8" << endl;
     }
 }
 #endif 
