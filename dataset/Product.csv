@@ -1,0 +1,16 @@
+ID,Category,Quantity,DemandLevel
+1,Electronics,150,High
+2,Furniture,80,Low
+3,Clothing,200,High
+4,Toys,120,High
+5,Books,160,High
+6,Groceries,180,High
+7,Stationery,90,Low
+8,Sports,110,Low
+9,Beauty,140,High
+10,Automotive,70,Low
+11,Jewelry,60,Low
+12,Music,55,Low
+13,Pet Supplies,75,Low
+14,Garden,100,Low
+15,Office,130,High 
