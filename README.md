@@ -19,6 +19,7 @@ example
 ```
 cd C:\Users\sirab\Downloads\123123123\AUTOMATIC_DATA-SCIENCE-PIPELINE-main
 ```
+compiles a C++ application (pipeline.exe) 
 ```
 g++ -I. -I[directory containing Python headers] -I[directory containing NumPy headers] -L[directory containing Python library] -o pipeline.exe main.cpp DataBase.cpp Plot.cpp -lpython312
 ```
@@ -26,6 +27,7 @@ example
 ```
 g++ -I. -I"C:\Users\sirab\AppData\Local\Programs\Python\Python312\include" -I"C:\Users\sirab\AppData\Local\Programs\Python\Python312\Lib\site-packages\numpy\core\include" -L"C:\Users\sirab\AppData\Local\Programs\Python\Python312\libs" -o pipeline.exe main.cpp DataBase.cpp Plot.cpp -lpython312
 ```
+Run the program
 ```
 pipeline.exe
 ```
