@@ -11,13 +11,15 @@ std::string ask_chart_type() {
     std::cout << "1. Line Chart\n";
     std::cout << "2. Bar Chart\n";
     std::cout << "3. Categorical Bar Chart (e.g., by name)\n";
-    std::cout << "Enter (1-3): ";
+    std::cout << "4. Categorical Line Chart (e.g., by name)\n";
+    std::cout << "Enter (1-4): ";
     std::cin >> choice;
 
     switch (choice) {
         case 1: return "line";
         case 2: return "bar";
         case 3: return "cat_bar";
+        case 4: return "cat_line";
         default:
             std::cout << "Invalid choice, defaulting to line chart.\n";
             return "line";
@@ -86,8 +88,24 @@ void plot_categorical_bar(const std::vector<std::string>& categories, const std:
         x.push_back(i);
     }
 
-    plt::bar(x, values);               
-    plt::xticks(x, categories);        
+    plt::bar(x, values);
+    plt::xticks(x, categories);
+    plt::title(y_label + " by " + x_label);
+    plt::xlabel(x_label);
+    plt::ylabel(y_label);
+    plt::grid(true);
+    plt::show();
+}
+
+// Line chart for categorical (string) X-axis
+void plot_categorical_line(const std::vector<std::string>& categories, const std::vector<double>& values, std::string x_label, std::string y_label) {
+    std::vector<double> x;
+    for (size_t i = 0; i < categories.size(); ++i) {
+        x.push_back(i);
+    }
+
+    plt::plot(x, values, "b-o");
+    plt::xticks(x, categories);
     plt::title(y_label + " by " + x_label);
     plt::xlabel(x_label);
     plt::ylabel(y_label);

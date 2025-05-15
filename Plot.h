@@ -20,3 +20,9 @@ void plot_line(const std::vector<double>& x, const std::vector<double>& y, std::
 
 // Plot a bar chart with given X and Y values
 void plot_bar(const std::vector<double>& x, const std::vector<double>& y, std::string x_label, std::string y_label);
+
+// Plot a bar chart for categorical X-axis
+void plot_categorical_bar(const std::vector<std::string>& categories, const std::vector<double>& values, std::string x_label, std::string y_label);
+
+// Plot a line chart for categorical X-axis
+void plot_categorical_line(const std::vector<std::string>& categories, const std::vector<double>& values, std::string x_label, std::string y_label);

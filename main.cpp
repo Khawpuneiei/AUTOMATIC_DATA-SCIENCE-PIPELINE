@@ -10,7 +10,6 @@
 
 using namespace std;
 
-
 int main() {
     int choice;
     string csvname;
@@ -124,6 +123,7 @@ int main() {
             string y_col = headers[y_index];
 
             string chart_type = ask_chart_type();
+
             if (chart_type == "cat_bar") {
                 vector<string> categories;
                 vector<double> values;
@@ -136,6 +136,18 @@ int main() {
                     }
                 }
                 plot_categorical_bar(categories, values, x_col, y_col);
+            } else if (chart_type == "cat_line") {
+                vector<string> categories;
+                vector<double> values;
+                for (const auto& row : table) {
+                    categories.push_back(row.second.at(x_col));
+                    try {
+                        values.push_back(stod(row.second.at(y_col)));
+                    } catch (...) {
+                        values.push_back(0);
+                    }
+                }
+                plot_categorical_line(categories, values, x_col, y_col);
             } else {
                 auto data = extract_numeric_columns(table, {x_col, y_col});
                 vector<double> x = data[x_col];
